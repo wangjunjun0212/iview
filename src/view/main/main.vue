@@ -4,8 +4,9 @@
       <side-menu accordion ref="sideMenu" :active-name="$route.name" :collapsed="collapsed" @on-select="turnToPage" :menu-list="menuList">
         <!-- 需要放在菜单上面的内容，如Logo，写在side-menu标签内部，如下 -->
         <div class="logo-con">
-          <img v-show="!collapsed" :src="maxLogo" key="max-logo" />
-          <img v-show="collapsed" :src="minLogo" key="min-logo" />
+          <!-- <h2>广告投放</h2> -->
+          <!-- <img  :src="logo"/> -->
+          <span v-if="!collapsed">广告投放管理</span>
         </div>
       </side-menu>
     </Sider>
@@ -13,8 +14,6 @@
       <Header class="header-con">
         <header-bar :collapsed="collapsed" @on-coll-change="handleCollapsedChange">
           <user :user-avator="userAvator"/>
-          <language @on-lang-change="setLocal" style="margin-right: 10px;" :lang="local"/>
-          <fullscreen v-model="isFullscreen" style="margin-right: 10px;"/>
         </header-bar>
       </Header>
       <Content class="main-content-con">
@@ -23,42 +22,67 @@
             <tags-nav :value="$route" @input="handleClick" :list="tagNavList" @on-close="handleCloseTag"/>
           </div>
           <Content class="content-wrapper">
+            <!-- 主要内容-->
             <keep-alive :include="cacheList">
               <router-view/>
             </keep-alive>
+            <!-- 内容区底部备案信息-->
+            <div class="zzld-footer">
+              <div class="zzld-footer-copy">
+                  2017-2017 &copy; AiiuA
+              </div>
+              <div class="zzld-footer-record">
+                  <ul>
+                      <li>宁ICP备17001712号</li>
+                      <li>宁ICP备17001712号-1</li>
+                  </ul>
+              </div>
+            </div>
           </Content>
         </Layout>
       </Content>
     </Layout>
   </Layout>
 </template>
+<style scoped>
+  .logo-con {
+    height:60px;
+  }
+  .logo-con img {
+    width:52px;
+    height:52px;
+    float: left;
+  }
+  .logo-con span {
+    color:#fff;
+    line-height: 60px;
+    font-weight: bold;
+    margin-left:10px;
+    font-size:22px;
+  }
+</style>
+
 <script>
 import SideMenu from './components/side-menu'
 import HeaderBar from './components/header-bar'
 import TagsNav from './components/tags-nav'
 import User from './components/user'
-import Fullscreen from './components/fullscreen'
-import Language from './components/language'
 import { mapMutations, mapActions } from 'vuex'
 import { getNewTagList, getNextRoute, routeEqual } from '@/libs/util'
-import minLogo from '@/assets/images/logo-min.jpg'
-import maxLogo from '@/assets/images/logo.jpg'
+import logo from '@/assets/images/logo.gif'
 import './main.less'
 export default {
   name: 'Main',
   components: {
     SideMenu,
     HeaderBar,
-    Language,
     TagsNav,
-    Fullscreen,
     User
   },
   data () {
     return {
       collapsed: false,
-      minLogo,
-      maxLogo,
+      logo,
       isFullscreen: false
     }
   },
@@ -77,17 +101,13 @@ export default {
     },
     menuList () {
       return this.$store.getters.menuList
-    },
-    local () {
-      return this.$store.state.app.local
     }
   },
   methods: {
     ...mapMutations([
       'setBreadCrumb',
       'setTagNavList',
-      'addTag',
-      'setLocal'
+      'addTag'
     ]),
     ...mapActions([
       'handleLogin'
@@ -150,28 +170,6 @@ export default {
     })
     this.setBreadCrumb(this.$route.matched)
     // 设置初始语言
-    this.setLocal(this.$i18n.locale)
-    // 文档提示
-    this.$Notice.info({
-      title: '想快速上手，去看文档吧',
-      duration: 0,
-      render: (h) => {
-        return h('p', {
-          style: {
-            fontSize: '13px'
-          }
-        }, [
-          '点击',
-          h('a', {
-            attrs: {
-              href: 'https://lison16.github.io/iview-admin-doc/#/',
-              target: '_blank'
-            }
-          }, 'iview-admin2.0文档'),
-          '快速查看'
-        ])
-      }
-    })
   }
 }
 </script>

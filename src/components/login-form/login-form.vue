@@ -3,22 +3,34 @@
     <FormItem prop="userName">
       <Input v-model="form.userName" placeholder="请输入用户名">
         <span slot="prepend">
-          <Icon :size="16" type="ios-person"></Icon>
+          <Icon :size="28" type="ios-person"></Icon>
         </span>
       </Input>
     </FormItem>
     <FormItem prop="password">
       <Input type="password" v-model="form.password" placeholder="请输入密码">
         <span slot="prepend">
-          <Icon :size="14" type="md-lock"></Icon>
+          <Icon :size="24" type="md-lock"></Icon>
         </span>
       </Input>
     </FormItem>
     <FormItem>
+      <p @click="enditSubmit" style="text-align:right;cursor:pointer;float: right;width: 80px;font-size:14px;color:red">修改密码</p>
+    </FormItem>
+    <FormItem class="login-submit">
       <Button @click="handleSubmit" type="primary" long>登录</Button>
     </FormItem>
   </Form>
 </template>
+<style lang="less">
+  .ivu-card-body {
+    padding:40px 60px;
+    .ivu-input {
+      height:40px;
+    }
+  }
+</style>
+
 <script>
 export default {
   name: 'LoginForm',
@@ -44,7 +56,7 @@ export default {
     return {
       form: {
         userName: 'super_admin',
-        password: ''
+        password: '1234'
       }
     }
   },
@@ -66,6 +78,9 @@ export default {
           })
         }
       })
+    },
+    enditSubmit () {
+
     }
   }
 }

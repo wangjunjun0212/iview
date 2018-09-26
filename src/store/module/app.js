@@ -29,9 +29,6 @@ export default {
         }
         setTagNavListInLocalstorage([...state.tagNavList])
       }
-    },
-    setLocal (state, lang) {
-      state.local = lang
     }
   }
 }
